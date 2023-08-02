@@ -1,6 +1,8 @@
 package com.jkxy.car.api.controller;
 
+import com.jkxy.car.api.pojo.Buyer;
 import com.jkxy.car.api.pojo.Car;
+import com.jkxy.car.api.pojo.FuzzyQueryAndRange;
 import com.jkxy.car.api.service.CarService;
 import com.jkxy.car.api.utils.JSONResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,5 +86,37 @@ public class CarController {
     public JSONResult insertCar(Car car) {
         carService.insertCar(car);
         return JSONResult.ok();
+    }
+
+    /**
+     * 通过车名购买
+     *
+     * @param buyer
+     * @return
+     */
+    @PostMapping("buyCar")
+    public JSONResult insertCar(Buyer buyer) throws Exception {
+        try {
+            carService.buyCar(buyer);
+            return JSONResult.ok();
+        } catch (Exception e) {
+            return JSONResult.errorMsg(e.getMessage());
+        }
+    }
+
+    /**
+     * 模糊查询并根据范围显示
+     *
+     * @param fuzzyQueryAndRange
+     * @return
+     */
+    @PostMapping("fuzzyQueryAndRange")
+    public JSONResult fuzzyQueryAndRange(FuzzyQueryAndRange fuzzyQueryAndRange) throws Exception {
+        try {
+            List<Car> cars = carService.fuzzyQueryAndRange(fuzzyQueryAndRange);
+            return JSONResult.ok(cars);
+        } catch (Exception e) {
+            return JSONResult.errorMsg(e.getMessage());
+        }
     }
 }

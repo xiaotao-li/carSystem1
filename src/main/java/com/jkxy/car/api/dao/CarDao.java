@@ -1,6 +1,8 @@
 package com.jkxy.car.api.dao;
 
+import com.jkxy.car.api.pojo.Buyer;
 import com.jkxy.car.api.pojo.Car;
+import com.jkxy.car.api.pojo.FuzzyQueryAndRange;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -23,6 +25,13 @@ public interface CarDao {
     @Update("update carMessage set carName=#{carName},carType=#{carType},price=#{price},carSeries=#{carSeries} where id = #{id}")
     void updateById(Car car);
 
-    @Insert("insert into carMessage(carName,carType,price,carSeries) values(#{carName},#{carType},#{price},#{carSeries})")
+    @Insert("insert into carMessage(carName,carType,price,carSeries,inventory) values(#{carName},#{carType},#{price},#{carSeries},#{inventory})")
     void insertCar(Car car);
+
+
+    @Update("UPDATE carMessage SET inventory = inventory - #{num} WHERE carName = #{carName}")
+    void buyCar(Buyer buyer);
+
+    @Select("SELECT * FROM carMessage WHERE carName LIKE concat('%',#{content},'%') LIMIT #{start},#{num}")
+    List<Car> fuzzyQueryAndRange(String content, int start, int num);
 }
